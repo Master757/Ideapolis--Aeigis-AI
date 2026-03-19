@@ -2,6 +2,26 @@ import pywhatkit
 import pyautogui
 import time
 
+import datetime
+
+# Store reminders in a simple list
+# Format: {"task": "Take medicine", "time": "20:30"}
+REMINDERS = []
+
+def set_reminder(task, time_at):
+    """
+    time_at should be in HH:MM format (24-hour)
+    Example: set_reminder("Take heart medicine", "10:30")
+    """
+    try:
+        datetime.datetime.strptime(time_at, "%H:%M")
+        REMINDERS.append({"task": task, "time": time_at, "done": False})
+        print(f"[REMINDER SET] {task} at {time_at}")
+        return f"Okay, I've set a reminder to {task} at {time_at}."
+    except ValueError:
+        return "I couldn't understand the time format. Please use HH:MM."
+
+
 def send_message(contact, message):
     if not contact or not message:
         return "Missing contact or message"
@@ -46,7 +66,8 @@ TOOLS = {
     "send_message": send_message,
     "clean_storage": clean_storage,
     "play_music": play_music,
-    "emergency_alert": emergency_alert
+    "emergency_alert": emergency_alert,
+    "set_reminder": set_reminder
 }
 
 CONTACTS = {
